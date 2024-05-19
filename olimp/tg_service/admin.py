@@ -10,18 +10,13 @@ class AdminChildren(admin.ModelAdmin):
         'mobile_phone', 'birthdate', 'parent_id'
     ]
 
-
-class CustomUserAdmin(UserAdmin):
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'is_parent', 'is_child'),
-        }),
-    )
-    list_display = ['username', 'password', 'is_parent', 'is_child']
+    fields = ['username', 'password', 'is_parent', 'is_child']
+    list_display = ['id', 'username', 'password', 'is_parent', 'is_child']
 
 
-admin.site.register(CustomUser, CustomUserAdmin)
+
 admin.site.register(Parents)
 admin.site.register(Subscriptions)
