@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Children, Parents, Subscriptions, CustomUser
+from .models import Children, Parents, CustomUser
 
 
 @admin.register(Children)
@@ -25,4 +25,3 @@ class ParentAdmin(admin.ModelAdmin):
 
 
 
-admin.site.register(Subscriptions)
