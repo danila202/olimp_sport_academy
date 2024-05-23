@@ -4,6 +4,7 @@ from telebot import types
 from telebot.types import Message
 from dotenv import load_dotenv
 from telegram_bot.registration import handler_registration
+from telegram_bot.auth import input_username
 
 load_dotenv()
 
@@ -15,18 +16,21 @@ user = {}
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    send_codeword_prompt(message.chat.id)
+    bot.send_message(message.chat.id, "Добро пожаловать! Введите кодовое слово")
+    bot.register_next_step_handler(message, callback=is_correct_secret_key)
 
-
-def send_codeword_prompt(chat_id):
-    bot.send_message(chat_id, "Добро пожаловать! Введите кодовое слово")
-
-
-@bot.message_handler(func=lambda message: True)
-def handle_message(message: Message):
+def is_correct_secret_key(message):
     if message.text == os.environ.get("SECRET_WORD"):
-        bot.send_message(message.chat.id, "Верно. Теперь предлагаю Вам зарегестрироваться")
+        bot.send_message(message.chat.id, "Верно. Теперь предлагаю Вам зарегестрироваться."
+                                          "\nНапишите слово - Зарегистрироваться")
+    else:
+        bot.send_message(message.chat.id, "Неверно")
+        send_welcome(message)
+
+@bot.message_handler(func=lambda message: message.text=="Зарегистрироваться")
+def create_register_button(message):
         formatted_text = (
+
             "<b>Если вы регистрируетесь как родитель</b>, сначала создайте учетную запись для себя, "
             "а затем зарегистрируйте ваших детей.\n"
             "<b> Если вы регистрируетесь как спортсмен</b>, создайте учетную запись только для себя."
@@ -36,13 +40,8 @@ def handle_message(message: Message):
         register_athlete = types.KeyboardButton("Зарегистрироваться как спортсмен")
         markup.add(register_parent, register_athlete)
         bot.send_message(message.chat.id, formatted_text, parse_mode='HTML', reply_markup=markup)
-        bot.register_next_step_handler(message, registrate)
-    else:
-        bot.send_message(message.chat.id, "Неверное кодовое слово. Попробуйте еще раз.")
-        send_codeword_prompt(message.chat.id)
+        bot.register_next_step_handler(message, callback=registrate)
 
-
-@bot.message_handler(func=lambda message: True)
 def registrate(message):
     if message.text == "Зарегистрироваться как родитель":
         user['is_parent'] = True
@@ -52,11 +51,9 @@ def registrate(message):
         user['is_child'] = True
     handler_registration(message, bot, user)
 
-
-
-
-
-
+@bot.message_handler(func=lambda message: message.text=="Войти")
+def login(message):
+    input_username(message, bot)
 
 
 if __name__ =="__main__":

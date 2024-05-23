@@ -17,6 +17,12 @@ class CustomUserAdmin(admin.ModelAdmin):
     list_display = ['id', 'username', 'password', 'is_parent', 'is_child']
 
 
+@admin.register(Parents)
+class ParentAdmin(admin.ModelAdmin):
+    model = CustomUser
+    list_display = ['id', 'name', 'surname', 'patronymic', 'mobile_phone']
 
-admin.site.register(Parents)
+
+
+
 admin.site.register(Subscriptions)

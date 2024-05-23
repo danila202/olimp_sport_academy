@@ -29,7 +29,6 @@ class Parents(models.Model):
 
 class Children(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='children')
-
     name = models.CharField(max_length=50)
     surname = models.CharField(max_length=50)
     patronymic = models.CharField(max_length=50)
