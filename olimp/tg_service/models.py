@@ -61,7 +61,7 @@ class SubscriptionType(models.Model):
         db_table = 'subscription_type'
 
     def __str__(self):
-        return f"{self.amount_training} {self.price}"
+        return f"{self.amount_training}/ {self.price}"
 
 
 class Employee(models.Model):
@@ -140,8 +140,20 @@ class Subscription(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name='subscriptions')
 
     def __str__(self):
-        return f"{self.conclusion_date}. {self.parent_id} {self.child_id}"
+        return f"{self.conclusion_date}.{self.child}.{self.group}"
 
     class Meta:
         db_table = 'subscription'
 
+
+class Visitation(models.Model):
+    date = models.DateField()
+    time_of_arrival = models.TimeField()
+    subscription = models.ForeignKey(Subscription,on_delete=models.CASCADE,
+                                     related_name='visitations')
+
+    def __str__(self):
+        return f'{self.date} {self.time_of_arrival} по абонементу {self.subscription}'
+
+    class Meta:
+        db_table = 'visitation'

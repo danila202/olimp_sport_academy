@@ -128,6 +128,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'tg_service.CustomUser'
 
+DJANGO_SETTINGS_MODULE = os.environ.get("DJANGO_SETTINGS_MODULE")
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',

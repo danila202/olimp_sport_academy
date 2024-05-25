@@ -1,9 +1,12 @@
 from telebot.types import Message
 import requests
 
+from telegram_bot.user_menu import create_menu
+
 data = {}
 
 API_URL = 'http://0.0.0.0:8000/tg/'
+
 
 def registrate(message: Message, bot, json_custom_user,user):
     data['user'] = json_custom_user["id"]
@@ -13,10 +16,13 @@ def registrate(message: Message, bot, json_custom_user,user):
         bot.send_message(message.chat.id, "Ваши данные успешно сохранены")
 
 
-def start_registrate(message: Message, bot, json_custom_user):
+def start_registrate(message: Message, bot, json_custom_user, is_parent):
     if message.text != "Продолжить":
+        is_parent = True
+    bot.send_message(message.chat.id, "Вы новый пользователь. Введите данные")
+    if is_parent:
         parent = requests.get(f'http://0.0.0.0:8000/tg/parent-info?username='+message.text).json()
-        data["parent_id"] = parent.get("id")
+        data["parent"] = parent.get("id")
 
     bot.send_message(message.chat.id, 'Введите своё имя')
     bot.register_next_step_handler(message, save_name, bot, json_custom_user)

@@ -14,7 +14,7 @@ class ParentSerializer(serializers.ModelSerializer):
 
 
 class ChildSerializer(serializers.ModelSerializer):
-    parent = ParentSerializer(source='parent_id', read_only=True)
+    #real_parent = ParentSerializer(source='parent', read_only=True)
     class Meta:
         model = Children
         fields = '__all__'

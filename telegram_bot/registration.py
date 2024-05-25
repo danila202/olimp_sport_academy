@@ -2,6 +2,8 @@ from telebot import types
 from telebot.types import Message
 import requests
 
+from telegram_bot.user_menu import create_login_button
+
 API_URL = 'http://0.0.0.0:8000/tg'
 
 
@@ -29,10 +31,10 @@ def send_post_request(message: Message, bot, user):
     r = requests.post(API_URL+'/user', data=user)
     if r.status_code == 201:
         bot.send_message(message.chat.id, f"Поздравляю Вы зарегистрировались")
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-        login_button = types.KeyboardButton("Войти")
-        markup.add(login_button)
-        bot.send_message(message.chat.id, "Нажмите кнопку Войти", reply_markup=markup)
+        create_login_button(message, bot)
+    else:
+        ...
+        #Обработать ошибку регистрации
 
 
 
