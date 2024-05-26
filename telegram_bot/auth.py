@@ -55,8 +55,8 @@ def is_login(message, bot):
 
 def logout(message, bot):
     del session[message.chat.id]
-    create_login_button(message, bot)
     requests.get('http://0.0.0.0:8000/auth/logout/')
+    is_login(message, bot)
 
 
 def fill_user_data(message, bot):
@@ -94,4 +94,6 @@ def fill_user_data(message, bot):
                 bot.register_next_step_handler(
                     msg,start_registrate, bot, session[message.chat.id],is_parent=False
                 )
+    else:
+        bot.send_message(message.chat.id, "Вы не вошли в аккаунт")
 

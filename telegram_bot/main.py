@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from telegram_bot.registration import handler_registration
 from telegram_bot.auth import input_username, fill_user_data, logout, is_login
 from telegram_bot.handel_schedule import view_schedule
-from telegram_bot.user_menu import create_registration_button, create_login_button
+from telegram_bot.modify_date import enter_change_field
 from telegram_bot.handel_visitation import view_visitation
 
 
@@ -80,7 +80,9 @@ def handel_visitation(message):
 def handel_logout(message):
     logout(message, bot)
 
-
+@bot.message_handler(func=lambda message: message.text=="📝 Изменить личные данные")
+def handel_modify(message):
+    enter_change_field(message, bot)
 
 
 if __name__ =="__main__":

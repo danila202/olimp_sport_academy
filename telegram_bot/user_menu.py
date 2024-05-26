@@ -10,7 +10,8 @@ def create_menu(message, bot, parent):
         button_personal_data,
         button_schedule,
         button_visiting,
-        button_logout
+        button_logout,
+        button_modify_personal_data
     )
     if parent:
         register_athlete = types.KeyboardButton("Зарегистрироваться как спортсмен")
